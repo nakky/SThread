@@ -1,37 +1,81 @@
+project(
+  'SThread',
+  'cpp',
+  version: '0.1',
+  default_options: [
+    'cpp_std=c++20',
+    'default_library=both',
+  ],
+  meson_version: '>=0.47.0',
+)
 
-sthread_inc = include_directories('include')
+compiler = meson.get_compiler('cpp')
+compiler_id = compiler.get_id()
+bt = get_option('buildtype')
 
-sthread_srcs = [
-  'src/Lock.cpp',
-  'src/Timer.cpp',
-  'src/Thread.cpp',
-  'src/ThreadDriver.cpp',
-  'src/QueueThread.cpp',
+cpp_args = []
+link_args = []
+static_link_args = []
+cpp_defines = []
+cpp_define_args = []
+define_prefix = '-D'
+
+posix_common_args = [
+  '-Wall', '-Wextra', '-Wpedantic', '-Wshadow', '-Wstrict-aliasing',
+  '-Wstrict-overflow=5', '-Wcast-align',
+  '-Wpointer-arith', '-Wcast-qual', '-Wold-style-cast',
 ]
-
-system_has_pthread = [
-  'openbsd', 'netbsd', 'freebsd', 'gnu/kfreebsd', 'dragonfly', 'sunos',
-  'linux', 
-  'android', 
-  'darwin'
-  ].contains(host_machine.system())
-
-if system_has_pthread
-    sthread_srcs += [
-      'src/PThread/PThreadThreadDriver.cpp',
-    ]
-    thread_dep = dependency('threads')
-elif ['windows'].contains(host_machine.system())
-    sthread_srcs += [
-      'src/W32/W32ThreadThreadDriver.cpp',
-    ]
-else
-    error('Unknown Platform @0@.'.format(host_machine.system()))
+if compiler_id == 'clang'
+  cpp_args += posix_common_args + [
+    '-Wabi', '-flto',
+  ]
+  link_args += ['-flto']
+  static_link_args = [
+    '-lstdc++', '-lm',
+  ]
+  cpp_defines += ['PACKETEER_IS_BUILDING=1']
+elif compiler_id == 'gcc'
+  cpp_args += posix_common_args + [
+    '-Wstrict-null-sentinel', '-flto',
+  ]
+  link_args += ['-flto']
+  static_link_args = [
+    '-lstdc++', '-lm',
+  ]
+  cpp_defines += ['PACKETEER_IS_BUILDING=1']
 endif
 
-sthread_lib = static_library('sthread',
-                sthread_srcs,
-                install: false,
-                include_directories: sthread_inc,
-                cpp_args: cpp_define_args
-                )
+if bt in ['debug', 'debugoptimized']
+  cpp_defines += ['DEBUG=1']
+
+  if compiler_id == 'clang'
+    cpp_args += ['-ggdb']
+  elif compiler_id == 'gcc'
+    cpp_args += ['-g3']
+  endif
+else
+  cpp_defines += ['NDEBUG=1']
+
+  posix_release_args = [
+    '-fvisibility=hidden', '-fvisibility-inlines-hidden',
+  ]
+  if compiler_id == 'clang'
+    cpp_args += posix_release_args
+  elif compiler_id == 'gcc'
+    cpp_args += posix_release_args
+  endif
+endif
+
+cpp_args += ['-fpermissive', '-Wold-style-cast']
+
+cpp_args += ['-DWLR_USE_UNSTABLE']
+
+foreach def : cpp_defines
+  cpp_define_args += [define_prefix + def]
+endforeach
+
+add_project_arguments(cpp_args, language: 'cpp')
+
+subdir('src')
+
+subdir('examples')

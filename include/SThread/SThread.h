@@ -1,8 +1,8 @@
 /******************************************************************/
-/*!	
+/*!
 	@file Communication.h
 	@brief Interface header for Common.lib
-	@note 
+	@note
 	@todo
 	@bug
 
@@ -17,8 +17,8 @@
 #include "SThread/Common.h"
 
 #include "SThread/Timer.h"
+#include "SThread/Lock.h"
 #include "SThread/Thread.h"
 #include "SThread/QueueThread.h"
 
-
-#endif //SThread
+#endif // SThread
