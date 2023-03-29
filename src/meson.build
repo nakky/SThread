@@ -30,7 +30,7 @@ endif
 
 sthread_lib = static_library('sthread',
                 sthread_srcs,
-                install: false,
+                install: true,
                 include_directories: sthread_inc,
                 cpp_args: cpp_define_args
                 )
