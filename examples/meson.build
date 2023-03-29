@@ -3,7 +3,6 @@ inc = include_directories([
   '../include',
   ])
 
-sthread_dep = declare_dependency(link_with: sthread_lib)
 
 deps = [
   sthread_dep,

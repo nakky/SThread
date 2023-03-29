@@ -1,7 +1,7 @@
 project(
   'SThread',
   'cpp',
-  version: '0.1',
+  version: '0.1.0',
   default_options: [
     'cpp_std=c++20',
     'default_library=both',
@@ -78,4 +78,9 @@ add_project_arguments(cpp_args, language: 'cpp')
 
 subdir('src')
 
-subdir('examples')
+sthread_dep = declare_dependency(link_with: sthread_lib)
+
+if get_option('examples')
+  subdir('examples')
+endif
+
