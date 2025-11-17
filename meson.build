@@ -23,7 +23,7 @@ define_prefix = '-D'
 posix_common_args = [
   '-Wall', '-Wextra', '-Wpedantic', '-Wshadow', '-Wstrict-aliasing',
   '-Wstrict-overflow=5', '-Wcast-align',
-  '-Wpointer-arith', '-Wcast-qual', '-Wold-style-cast',
+  '-Wpointer-arith', '-Wcast-qual', 
 ]
 if compiler_id == 'clang'
   cpp_args += posix_common_args + [
@@ -66,7 +66,7 @@ else
   endif
 endif
 
-cpp_args += ['-fpermissive', '-Wold-style-cast']
+# cpp_args += ['-fpermissive', '-Wold-style-cast']
 
 cpp_args += ['-DWLR_USE_UNSTABLE']
 

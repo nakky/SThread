@@ -283,7 +283,6 @@
 #elif defined ARCHTECTURE_32BIT
 
 #define POINTER_BYTE_SIZE 4
-    typedef SBUInt SBPointer;
 
 #endif
 

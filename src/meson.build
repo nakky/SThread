@@ -22,7 +22,7 @@ if system_has_pthread
     thread_dep = dependency('threads')
 elif ['windows'].contains(host_machine.system())
     sthread_srcs += [
-      'W32/W32ThreadThreadDriver.cpp',
+      'W32/W32ThreadDriver.cpp',
     ]
 else
     error('Unknown Platform @0@.'.format(host_machine.system()))
