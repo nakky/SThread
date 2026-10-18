@@ -38,6 +38,10 @@
     #ifndef OS_LINUX
         #define OS_LINUX
     #endif
+#elif defined (__FreeBSD__)
+    #ifndef OS_FREEBSD
+        #define OS_FREEBSD
+    #endif
 #endif
 
 #if defined OS_IPHONE || defined OS_ANDROID
@@ -197,7 +201,7 @@
 //ASM
 #if defined OS_WINDOWS || defined OS_MACOSX || defined OS_IPHONE
     #define ASM_MS
-#elif defined OS_LINUX || defined OS_ANDROID
+#elif defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
     #define ASM_GCC
 #endif
 

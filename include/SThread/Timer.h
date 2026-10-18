@@ -20,7 +20,7 @@
 #include <mmsystem.h>
 #elif defined OS_MACOSX || defined OS_IPHONE
 #include <CoreFoundation/CoreFoundation.h>
-#elif defined OS_LINUX || defined OS_ANDROID
+#elif defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
 #include <sys/time.h>
 #endif
 
@@ -77,7 +77,7 @@ namespace SThread{
         unsigned int mBaseTime;
 #elif defined OS_MACOSX || defined OS_IPHONE
         double mBaseTime;
-#elif defined OS_LINUX || defined OS_ANDROID
+#elif defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
         struct timeval mBaseTime;
         struct timeval mElapsedTime;
 #endif
@@ -99,7 +99,7 @@ namespace SThread{
         mBaseTime = timeGetTime();
 #elif defined OS_MACOSX || defined OS_IPHONE
         mBaseTime = CFAbsoluteTimeGetCurrent();
-#elif defined OS_LINUX || defined OS_ANDROID
+#elif defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
         gettimeofday(&mBaseTime, NULL);
 #endif
     }
@@ -121,7 +121,7 @@ namespace SThread{
         return timeGetTime() - mBaseTime;
 #elif defined OS_MACOSX || defined OS_IPHONE
         return (unsigned int)((CFAbsoluteTimeGetCurrent() - mBaseTime) * 1000.0);
-#elif defined OS_LINUX || defined OS_ANDROID
+#elif defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
         gettimeofday(&mElapsedTime, NULL);
         return (unsigned int)(mElapsedTime.tv_sec - mBaseTime.tv_sec) % 0xffffff * 1000 + (mElapsedTime.tv_usec - mBaseTime.tv_usec) / 1000;
 #endif

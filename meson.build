@@ -78,7 +78,7 @@ add_project_arguments(cpp_args, language: 'cpp')
 
 subdir('src')
 
-sthread_dep = declare_dependency(link_with: sthread_lib)
+sthread_dep = declare_dependency(link_with: sthread_lib, dependencies: dependency('threads'))
 
 if get_option('examples')
   subdir('examples')

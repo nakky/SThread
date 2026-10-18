@@ -10,7 +10,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-#if defined OS_LINUX || defined OS_ANDROID
+#if defined OS_LINUX || defined OS_ANDROID || defined OS_FREEBSD
 #include <sys/time.h>
 #endif
 
